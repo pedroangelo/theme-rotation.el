@@ -8,7 +8,7 @@
 (defcustom theme-rotation-config
 	'(("08:00" . tsdh-light)
 		("20:00" . tsdh-dark))
-	"Configuration of theme rotation, composed of starting times for specific themes."
+	"Theme rotation configuration, composed of starting times for specific themes."
 	:type '(set (cons string function))
   :group 'theme-rotation)
 	
@@ -98,38 +98,40 @@
 (defun theme-rotation-get-next-theme ()
 	"get appropriate theme from theme rotation according to current time of day"
 	; set counter to 0
-	(setq i 0)
-	(setq chosen-theme nil)
+	(let ((i 0)
+        (chosen-theme nil))
+    
 	; loop on all themes and respective intervals
-	(while (/= i (length theme-rotation-config))
-				 (setq theme (nth i (theme-rotation-list-time-intervals-themes)))
+	  (progn
+      (while (/= i (length theme-rotation-config))
+				(let ((theme (nth i (theme-rotation-list-time-intervals-themes))))
 				 ; if theme's interval contains the current time
-				 (if (theme-rotation-current-time-interval-p (car theme))
-						 (progn
+				  (if (theme-rotation-current-time-interval-p (car theme))
+						  (progn
 							; change chosen theme
-							(setq chosen-theme (cdr theme))
+							  (setq chosen-theme (cdr theme))
 							; update counter to break out of loop
-							(setq i (length theme-rotation-config)))
-					   (setq i (+ i 1))))
-	chosen-theme)
+							  (setq i (length theme-rotation-config)))
+					  (setq i (+ i 1)))))
+      chosen-theme)))
 
 (defun theme-rotation-update-theme ()
-	"update theme according to time of day"
-	(setq new-theme (theme-rotation-get-next-theme))
-	(if (equal new-theme theme-rotation-current-theme)
-			nil
-		  (setq theme-rotation-current-theme new-theme)
-			(load-theme theme-rotation-current-theme t)))
+  "update theme according to time of day"
+  (let ((new-theme (theme-rotation-get-next-theme)))
+    (if (equal new-theme theme-rotation-current-theme)
+        nil
+      (setq theme-rotation-current-theme new-theme)
+      (load-theme theme-rotation-current-theme t))))
 
 ;; TIMERS
 
 (defun theme-rotation-set-timer (time)
 	"set a timer to call theme changer function every day"
-	(run-at-time time 86400 'theme-rotation-update-theme))
+  (run-at-time time 86400 'theme-rotation-update-theme))
 
 (defun theme-rotation-set-all-timers ()
-	"set timers for each theme's starting time"
-	(mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
+  "set timers for each theme's starting time"
+  (mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
 
 (defun theme-rotation-mode ()
   "change theme according to time of day while also setting timers"
