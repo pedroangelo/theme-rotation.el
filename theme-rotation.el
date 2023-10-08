@@ -15,61 +15,50 @@
 ;; AUXILIARY FUNCTIONS AND VARIABLES
 
 ; set variable with current theme
-(setq current-theme nil)
+(setq theme-rotation-current-theme nil)
 
-(defun convert-time-pair-to-string (date)
+(defun theme-rotation-convert-time-pair-to-string (date)
 	"convert date pair format to string"
 	(concat (number-to-string (car date)) ":" (number-to-string (cdr date))))
 
-(defun convert-time-string-to-pair (string)
+(defun theme-rotation-convert-time-string-to-pair (string)
 	"convert date string format to pair"
 	(cons (string-to-number (substring string 0 2)) (string-to-number (substring string 3 5))))
 
-(defun get-current-hour ()
-	"get the current hour as a number"
-	(string-to-number 
-	 (substring (current-time-string) 11 13)))
+(defun theme-rotation-get-current-time ()
+	"get current time as a pair: hour number as car and minute number as cdr"
+  (let ((current-hour (string-to-number (substring (current-time-string) 11 13))) (current-minute (string-to-number (substring (current-time-string) 14 16))))
+    (cons current-hour current-minute)))
 
-(defun get-current-minute ()
-	"get the current minute as a number"
-	(string-to-number 
-	 (substring (current-time-string) 14 16)))
-
-(defun get-current-time ()
-	"get current time as a pair of numbers"
-	(cons (get-current-hour) (get-current-minute)))
-
-(defun get-list-starting-times-string ()
-	"get a list of starting times in the theme rotation config, as strings"
+(defun theme-rotation-list-starting-times-string ()
+	"list starting times in the theme rotation config, as strings"
 	(mapcar 'car theme-rotation-config))
 
-(defun get-list-starting-times ()
-	"get a list of starting times in the theme rotation config"
-	(mapcar 'convert-time-string-to-pair (mapcar 'car theme-rotation-config)))
+(defun theme-rotation-list-starting-times ()
+	"list starting times in the theme rotation config"
+	(mapcar 'theme-rotation-convert-time-string-to-pair (mapcar 'car theme-rotation-config)))
 
-(defun get-list-themes ()
-	"get a list of themes in the theme rotation config"
+(defun theme-rotation-list-themes ()
+	"list the themes in the theme rotation config"
 	(mapcar 'cdr theme-rotation-config))
 
-(defun get-list-time-intervals ()
-	"get list of time intervals from theme rotation"
+(defun theme-rotation-list-time-intervals ()
+	"list time intervals, built from theme rotation config"
 	; build list of time intervals except the last that loops around
-	(setq time-intervals
-				(cl-mapcar #'cons
-									 (get-list-starting-times) 
-									 (cdr (get-list-starting-times))))
+	(let ((time-intervals (cl-mapcar #'cons
+									                 (theme-rotation-list-starting-times) 
+									                 (cdr (theme-rotation-list-starting-times))))
 	; build last element of list of time intervals, the one that loops around
-	(setq final-time-interval
 				; join last starting time with first starting time
-				(cons (nth (- (length (get-list-starting-times)) 1) (get-list-starting-times))
-							(nth 0 (get-list-starting-times))))
+	      (final-time-interval (cons (nth (- (length (theme-rotation-list-starting-times)) 1) (theme-rotation-list-starting-times))
+							                     (nth 0 (theme-rotation-list-starting-times)))))
 	; return complete list
-	(append time-intervals (cons final-time-interval nil)))
+	  (append time-intervals (cons final-time-interval nil))))
 
-(defun get-list-time-intervals-themes ()
-	"get list of time intervals with list of themes, both from the theme rotation"
+(defun theme-rotation-list-time-intervals-themes ()
+	"list time intervals along with respective theme, built from theme rotation config"
 	; zip list of time intervals with list of themes
-	(cl-mapcar #'cons (get-list-time-intervals) (get-list-themes)))
+	(cl-mapcar #'cons (theme-rotation-list-time-intervals) (theme-rotation-list-themes)))
 
 (defun is-time-before-inclusive-p (time1 time2)
 	"return t if time in first argument happens before time in second argument, or if both are equal"
@@ -85,7 +74,7 @@
 
 (defun current-time-interval-p (time-interval)
 	"return t if current time is within argument time interval"
-	(setq current-time (get-current-time))
+	(setq current-time (theme-rotation-get-current-time))
 	(setq starting-time (car time-interval))
 	(setq ending-time (cdr time-interval))
 	; check if midnight is within time interval or not
@@ -105,14 +94,14 @@
 
 ;; MAIN FUNCTIONALITY
 
-(defun get-new-theme ()
+(defun theme-rotation-get-next-theme ()
 	"get appropriate theme from theme rotation according to current time of day"
 	; set counter to 0
 	(setq i 0)
 	(setq chosen-theme nil)
 	; loop on all themes and respective intervals
 	(while (/= i (length theme-rotation-config))
-				 (setq theme (nth i (get-list-time-intervals-themes)))
+				 (setq theme (nth i (theme-rotation-list-time-intervals-themes)))
 				 ; if theme's interval contains the current time
 				 (if (current-time-interval-p (car theme))
 						 (progn
@@ -123,29 +112,29 @@
 					   (setq i (+ i 1))))
 	chosen-theme)
 
-(defun set-theme-from-rotation ()
-	"change theme automatically according to time of day"
-	(setq new-theme (get-new-theme))
-	(if (equal new-theme current-theme)
+(defun theme-rotation-update-theme ()
+	"update theme according to time of day"
+	(setq new-theme (theme-rotation-get-next-theme))
+	(if (equal new-theme theme-rotation-current-theme)
 			nil
-		  (setq current-theme new-theme)
-			(load-theme current-theme t)))
+		  (setq theme-rotation-current-theme new-theme)
+			(load-theme theme-rotation-current-theme t)))
 
 ;; TIMERS
 
-(defun set-theme-timer (time)
+(defun theme-rotation-set-timer (time)
 	"set a timer to call theme changer function every day"
-	(run-at-time time 86400 'set-theme-from-rotation))
+	(run-at-time time 86400 'theme-rotation-update-theme))
 
-(defun set-all-theme-timers ()
+(defun theme-rotation-set-all-timers ()
 	"set timers for each theme's starting time"
-	(mapcar 'set-theme-timer (get-list-starting-times-string)))
+	(mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
 
 (defun theme-rotation-mode ()
   "change theme according to time of day while also setting timers"
   (progn
-    (set-theme-from-rotation)
-    (set-all-theme-timers)))
+    (theme-rotation-update-theme)
+    (theme-rotation-set-all-timers)))
 
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here

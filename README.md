@@ -5,6 +5,7 @@ TODO:
   - this can be easily done by 'disable-theme current-theme'
 - maybe define it as a minor mode?
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Minor-Modes.html
+  - https://www.gnu.org/software/emacs/manual/html_node/elisp/Minor-Mode-Conventions.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Modes.html
   - https://systemcrafters.net/learning-emacs-lisp/creating-minor-modes/
 - add install and usage:
