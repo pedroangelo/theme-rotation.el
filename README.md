@@ -23,3 +23,4 @@ TODO:
   - use checkdoc in each buffer to point out style errors
   - flymake-mode to catch byte-compilation errors
   - install https://github.com/purcell/package-lint and M-x package-lint-current-buffer to get file ready for MELPA
+  - https://www.gnu.org/software/emacs/manual/html_node/elisp/Coding-Conventions.html
