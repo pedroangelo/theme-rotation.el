@@ -27,7 +27,8 @@
 
 (defun theme-rotation-get-current-time ()
 	"get current time as a pair: hour number as car and minute number as cdr"
-  (let ((current-hour (string-to-number (substring (current-time-string) 11 13))) (current-minute (string-to-number (substring (current-time-string) 14 16))))
+  (let ((current-hour (string-to-number (substring (current-time-string) 11 13))) 
+        (current-minute (string-to-number (substring (current-time-string) 14 16))))
     (cons current-hour current-minute)))
 
 (defun theme-rotation-list-starting-times-string ()
@@ -48,7 +49,7 @@
 	(let ((time-intervals (cl-mapcar #'cons
 									                 (theme-rotation-list-starting-times) 
 									                 (cdr (theme-rotation-list-starting-times))))
-	; build last element of list of time intervals, the one that loops around
+        ; build last element of list of time intervals, the one that loops around
 				; join last starting time with first starting time
 	      (final-time-interval (cons (nth (- (length (theme-rotation-list-starting-times)) 1) (theme-rotation-list-starting-times))
 							                     (nth 0 (theme-rotation-list-starting-times)))))
@@ -60,37 +61,37 @@
 	; zip list of time intervals with list of themes
 	(cl-mapcar #'cons (theme-rotation-list-time-intervals) (theme-rotation-list-themes)))
 
-(defun is-time-before-inclusive-p (time1 time2)
+(defun theme-rotation-is-time-before-inclusive-p (time1 time2)
 	"return t if time in first argument happens before time in second argument, or if both are equal"
 	(if (or (< (car time1) (car time2)) 
 					(and (= (car time1) (car time2)) 
 							 (<= (cdr time1) (cdr time2)))) t nil))
 
-(defun is-time-before-exclusive-p (time1 time2)
+(defun theme-rotation-is-time-before-exclusive-p (time1 time2)
 	"return t if time in first argument strictly happens before time in second argument"
 	(if (or (< (car time1) (car time2)) 
 					(and (= (car time1) (car time2)) 
 							 (< (cdr time1) (cdr time2)))) t nil))
 
-(defun current-time-interval-p (time-interval)
+(defun theme-rotation-current-time-interval-p (time-interval)
 	"return t if current time is within argument time interval"
-	(setq current-time (theme-rotation-get-current-time))
-	(setq starting-time (car time-interval))
-	(setq ending-time (cdr time-interval))
+  (let ((current-time (theme-rotation-get-current-time))
+        (starting-time (car time-interval))
+        (ending-time (cdr time-interval)))
 	; check if midnight is within time interval or not
-	(if (is-time-before-inclusive-p starting-time ending-time)
+	(if (theme-rotation-is-time-before-inclusive-p starting-time ending-time)
 			; if midnight is not within time interval
 			(and
 			 ; check if starting time comes before current time and
-			 (is-time-before-inclusive-p starting-time current-time)
+			 (theme-rotation-is-time-before-inclusive-p starting-time current-time)
 			 ; check if current time comes before ending time
-			 (is-time-before-exclusive-p current-time ending-time))
+			 (theme-rotation-is-time-before-exclusive-p current-time ending-time))
 		  ; if midnight is with time interval
 		  (or 
 			 ; check if starting time comes before current time or
-			 (is-time-before-inclusive-p starting-time current-time)
+			 (theme-rotation-is-time-before-inclusive-p starting-time current-time)
 			 ; check if current time comes before ending time
-			 (is-time-before-exclusive-p current-time ending-time))))
+			 (theme-rotation-is-time-before-exclusive-p current-time ending-time)))))
 
 ;; MAIN FUNCTIONALITY
 
@@ -103,7 +104,7 @@
 	(while (/= i (length theme-rotation-config))
 				 (setq theme (nth i (theme-rotation-list-time-intervals-themes)))
 				 ; if theme's interval contains the current time
-				 (if (current-time-interval-p (car theme))
+				 (if (theme-rotation-current-time-interval-p (car theme))
 						 (progn
 							; change chosen theme
 							(setq chosen-theme (cdr theme))
