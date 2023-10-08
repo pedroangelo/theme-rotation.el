@@ -141,13 +141,11 @@
 	"set timers for each theme's starting time"
 	(mapcar 'set-theme-timer (get-list-starting-times-string)))
 
-;; START SET-THEME AND TIMERS
-
-;; update theme on start
-(set-theme-from-rotation)
-
-;; start timers
-(set-all-theme-timers)
+(defun theme-rotation-mode ()
+  "change theme according to time of day while also setting timers"
+  (progn
+    (set-theme-from-rotation)
+    (set-all-theme-timers)))
 
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here

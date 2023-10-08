@@ -1,8 +1,6 @@
 # theme-rotation.el
 
 TODO:
-- add variable to turn on and off theme-rotation, according to melpa standards:
-  - set-theme-rotation; toggle option
 - disable previous theme before applying new one
   - this can be easily done by 'disable-theme current-theme'
 - maybe define it as a minor mode?
