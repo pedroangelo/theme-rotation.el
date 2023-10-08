@@ -139,5 +139,28 @@
     (theme-rotation-update-theme)
     (theme-rotation-set-all-timers)))
 
+
+;; (defun theme-rotation-update-theme (new-theme)
+;;   "update theme according to time of day"
+;;   (if (equal new-theme theme-rotation-current-theme)
+;;       nil
+;;     (setq theme-rotation-current-theme new-theme)
+;;     (load-theme theme-rotation-current-theme t)))
+
+
+;; (defun theme-rotation-set-timer (pair)
+;; 	"set a timer to call theme changer function every day"
+;;   (let ((starting-time (car pair))
+;;         (theme (cdr pair)))
+;;     (run-at-time starting-time (* 60 60 24) (lambda () (theme-rotation-update-theme theme)))))
+
+;; (defun theme-rotation-set-all-timers ()
+;;   "set timers for each theme's starting time"
+;;   (mapcar 'theme-rotation-set-timer theme-rotation-config))
+
+;; (defun theme-rotation-mode ()
+;;   "change theme according to time of day while also setting timers"
+;;   (theme-rotation-set-all-timers))
+
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here

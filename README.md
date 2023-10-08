@@ -1,6 +1,7 @@
 # theme-rotation.el
 
 TODO:
+- remove most of functionality, only timers are required
 - disable previous theme before applying new one
   - this can be easily done by 'disable-theme current-theme'
 - maybe define it as a minor mode?
@@ -12,6 +13,7 @@ TODO:
   - clone from github
   - with use package or simply by loading file
 - similar / related packages: 
+  - https://parasurv.neocities.org/emacs/change-emacs-theme-depending-on-time
   - https://github.com/toroidal-code/cycle-themes.el
   - https://github.com/hadronzoo/theme-changer
   - https://stackoverflow.com/questions/14760567/emacs-auto-load-color-theme-by-time
