@@ -3,6 +3,7 @@
 TODO:
 - remove most of functionality, only timers are required
 - maybe define it as a minor mode?
+  - add Theme-Rotation tag to mode line
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Minor-Modes.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Minor-Mode-Conventions.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Modes.html
@@ -16,6 +17,7 @@ TODO:
   - https://github.com/hadronzoo/theme-changer
   - https://stackoverflow.com/questions/14760567/emacs-auto-load-color-theme-by-time
 - prepare for melpa publication:
+  - improve comments, capitalize first letter of phrases, add more extensive explanations
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Simple-Packages.html
   - https://github.com/melpa/melpa/blob/master/CONTRIBUTING.org
   - https://github.com/bbatsov/emacs-lisp-style-guide
