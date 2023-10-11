@@ -99,7 +99,7 @@
 	"get appropriate theme from theme rotation according to current time of day"
 	; set counter to 0
 	(let ((i 0)
-        (chosen-theme nil))
+        (next-theme nil))
     
 	; loop on all themes and respective intervals
 	  (progn
@@ -109,21 +109,34 @@
 				  (if (theme-rotation-current-time-interval-p (car theme))
 						  (progn
 							; change chosen theme
-							  (setq chosen-theme (cdr theme))
+							  (setq next-theme (cdr theme))
 							; update counter to break out of loop
 							  (setq i (length theme-rotation-config)))
 					  (setq i (+ i 1)))))
-      chosen-theme)))
+      next-theme)))
 
-(defun theme-rotation-update-theme ()
-  "update theme according to time of day"
-  (let ((new-theme (theme-rotation-get-next-theme)))
-    (if (equal new-theme theme-rotation-current-theme)
+(defun theme-rotation-update-theme (&optional provided-theme)
+  "update theme according to time of day, first disabling the previous theme"
+  (cond
+   ;; provided-theme is nil, so get next-theme according to current time
+   ((equal provided-theme nil)
+    (let ((next-theme (theme-rotation-get-next-theme)))
+      (if (equal next-theme theme-rotation-current-theme)
+          nil
+        (progn
+          (when (not (equal theme-rotation-current-theme nil))
+            (disable-theme theme-rotation-current-theme t))
+          (load-theme next-theme t)
+          (setq theme-rotation-current-theme next-theme)))))
+   ;; if we have a provided-theme, apply that theme
+   (t
+    (if (equal provided-theme theme-rotation-current-theme)
         nil
-      (setq theme-rotation-current-theme new-theme)
-      (load-theme theme-rotation-current-theme t))))
-
-;; TIMERS
+      (progn
+        (when (not (equal theme-rotation-current-theme nil))
+          (disable-theme theme-rotation-current-theme))
+        (load-theme provided-theme t)
+        (setq theme-rotation-current-theme provided-theme))))))
 
 (defun theme-rotation-set-timer (time)
 	"set a timer to call theme changer function every day"
@@ -139,15 +152,6 @@
     (theme-rotation-update-theme)
     (theme-rotation-set-all-timers)))
 
-
-;; (defun theme-rotation-update-theme (new-theme)
-;;   "update theme according to time of day"
-;;   (if (equal new-theme theme-rotation-current-theme)
-;;       nil
-;;     (setq theme-rotation-current-theme new-theme)
-;;     (load-theme theme-rotation-current-theme t)))
-
-
 ;; (defun theme-rotation-set-timer (pair)
 ;; 	"set a timer to call theme changer function every day"
 ;;   (let ((starting-time (car pair))
@@ -157,10 +161,6 @@
 ;; (defun theme-rotation-set-all-timers ()
 ;;   "set timers for each theme's starting time"
 ;;   (mapcar 'theme-rotation-set-timer theme-rotation-config))
-
-;; (defun theme-rotation-mode ()
-;;   "change theme according to time of day while also setting timers"
-;;   (theme-rotation-set-all-timers))
 
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here

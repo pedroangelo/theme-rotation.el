@@ -2,8 +2,6 @@
 
 TODO:
 - remove most of functionality, only timers are required
-- disable previous theme before applying new one
-  - this can be easily done by 'disable-theme current-theme'
 - maybe define it as a minor mode?
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Minor-Modes.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Minor-Mode-Conventions.html
