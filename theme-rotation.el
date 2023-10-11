@@ -120,12 +120,16 @@
   (cond
    ;; provided-theme is nil, so get next-theme according to current time
    ((equal provided-theme nil)
+    ; get next theme according to time
     (let ((next-theme (theme-rotation-get-next-theme)))
+      ; chech if the current theme is the same as the next theme
       (if (equal next-theme theme-rotation-current-theme)
           nil
+        ; if current theme is different from next theme
         (progn
+          ; disable current-theme if it is not nil
           (when (not (equal theme-rotation-current-theme nil))
-            (disable-theme theme-rotation-current-theme t))
+            (disable-theme theme-rotation-current-theme))
           (load-theme next-theme t)
           (setq theme-rotation-current-theme next-theme)))))
    ;; if we have a provided-theme, apply that theme
