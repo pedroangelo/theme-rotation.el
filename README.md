@@ -1,9 +1,8 @@
 # theme-rotation.el
 
 TODO:
-- remove most of functionality, only timers are required
-- maybe define it as a minor mode?
-  - add Theme-Rotation tag to mode line
+- can we remove most of functionality, with only timers being required?
+- check if it is well defined as a minor mode
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Minor-Modes.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Minor-Mode-Conventions.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Modes.html

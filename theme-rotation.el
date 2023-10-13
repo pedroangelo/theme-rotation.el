@@ -3,7 +3,8 @@
 
 (defgroup theme-rotation ()
   "Automatically change theme according to time of day."
-  :group 'external)
+  :group 'appearance
+  :prefix "theme-rotation-")
 
 (defcustom theme-rotation-config
 	'(("08:00" . tsdh-light)
@@ -150,11 +151,18 @@
   "set timers for each theme's starting time"
   (mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
 
-(defun theme-rotation-mode ()
-  "change theme according to time of day while also setting timers"
-  (progn
-    (theme-rotation-update-theme)
-    (theme-rotation-set-all-timers)))
+(define-minor-mode theme-rotation-mode
+  "Minor mode for rotating themes according to specified times of day."
+  :init-value nil
+  :global t
+  :group 'appearance
+  :lighter " ThemeR"
+  
+  (if theme-rotation-mode
+      (progn
+        (theme-rotation-update-theme)
+        (theme-rotation-set-all-timers))
+    nil))
 
 ;; (defun theme-rotation-set-timer (pair)
 ;; 	"set a timer to call theme changer function every day"
