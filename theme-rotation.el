@@ -173,9 +173,9 @@
   (if theme-rotation-mode
       ;; run when mode is enabled
       (progn
+        (message "theme-rotation: mode enabled")
         (theme-rotation-update-theme)
-        (theme-rotation-set-all-timers)
-        (message "theme-rotation: mode enabled"))
+        (theme-rotation-set-all-timers))
     ;; run when mode is disabled
     (message "theme-rotation: mode disabled")))
 
