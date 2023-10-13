@@ -142,7 +142,7 @@
         (when (not (equal theme-rotation-current-theme nil))
           (disable-theme theme-rotation-current-theme))
         (load-theme provided-theme t)
-        (message "theme-rotation: changed theme to %s" provided-theme)
+        (message "theme-rotation: changed theme to provided theme %s" provided-theme)
         (setq theme-rotation-current-theme provided-theme))))))
 
 (defun theme-rotation-set-timer (time)
@@ -152,6 +152,16 @@
 (defun theme-rotation-set-all-timers ()
   "set timers for each theme's starting time"
   (mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
+
+;; (defun theme-rotation-set-timer (pair)
+;; 	"set a timer to call theme changer function every day"
+;;   (let ((starting-time (car pair))
+;;         (theme (cdr pair)))
+;;     (run-at-time starting-time (* 60 60 24) (apply-partially 'theme-rotation-update-theme theme))))
+
+;; (defun theme-rotation-set-all-timers ()
+;;   "set timers for each theme's starting time"
+;;   (mapcar 'theme-rotation-set-timer theme-rotation-config))
 
 (define-minor-mode theme-rotation-mode
   "Minor mode for rotating themes according to specified times of day."
@@ -168,16 +178,6 @@
         (message "theme-rotation: mode enabled"))
     ;; run when mode is disabled
     (message "theme-rotation: mode disabled")))
-
-;; (defun theme-rotation-set-timer (pair)
-;; 	"set a timer to call theme changer function every day"
-;;   (let ((starting-time (car pair))
-;;         (theme (cdr pair)))
-;;     (run-at-time starting-time (* 60 60 24) (lambda () (theme-rotation-update-theme theme)))))
-
-;; (defun theme-rotation-set-all-timers ()
-;;   "set timers for each theme's starting time"
-;;   (mapcar 'theme-rotation-set-timer theme-rotation-config))
 
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here
