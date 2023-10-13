@@ -2,6 +2,8 @@
 
 TODO:
 - can we remove most of functionality, with only timers being required?
+- when mode is turned off, remove timers, and when mode is turned on again, reapply timers
+  - https://github.com/DarwinAwardWinner/emacs-named-timer
 - check if it is well defined as a minor mode
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Minor-Modes.html
   - https://www.gnu.org/software/emacs/manual/html_node/elisp/Minor-Mode-Conventions.html
