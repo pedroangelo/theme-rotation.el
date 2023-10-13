@@ -1,7 +1,8 @@
 # theme-rotation.el
 
 TODO:
-- can we remove most of functionality, with only timers being required?
+- instead of always loading themes, check if theme is already loaded, and just enable it?
+  - custom-enabled-themes
 - when mode is turned off, remove timers, and when mode is turned on again, reapply timers
   - https://github.com/DarwinAwardWinner/emacs-named-timer
 - check if it is well defined as a minor mode
