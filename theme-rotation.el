@@ -132,6 +132,7 @@
           (when (not (equal theme-rotation-current-theme nil))
             (disable-theme theme-rotation-current-theme))
           (load-theme next-theme t)
+          (message "theme-rotation: changed theme to %s" next-theme)
           (setq theme-rotation-current-theme next-theme)))))
    ;; if we have a provided-theme, apply that theme
    (t
@@ -141,11 +142,12 @@
         (when (not (equal theme-rotation-current-theme nil))
           (disable-theme theme-rotation-current-theme))
         (load-theme provided-theme t)
+        (message "theme-rotation: changed theme to %s" provided-theme)
         (setq theme-rotation-current-theme provided-theme))))))
 
 (defun theme-rotation-set-timer (time)
 	"set a timer to call theme changer function every day"
-  (run-at-time time 86400 'theme-rotation-update-theme))
+  (run-at-time time (* 60 60 24) 'theme-rotation-update-theme))
 
 (defun theme-rotation-set-all-timers ()
   "set timers for each theme's starting time"
@@ -159,10 +161,13 @@
   :lighter " ThemeR"
   
   (if theme-rotation-mode
+      ;; run when mode is enabled
       (progn
         (theme-rotation-update-theme)
-        (theme-rotation-set-all-timers))
-    nil))
+        (theme-rotation-set-all-timers)
+        (message "theme-rotation: mode enabled"))
+    ;; run when mode is disabled
+    (message "theme-rotation: mode disabled")))
 
 ;; (defun theme-rotation-set-timer (pair)
 ;; 	"set a timer to call theme changer function every day"
