@@ -1,5 +1,5 @@
 # `theme-rotation.el`
-An Emacs minor mode to automatically change themes according to a specified times of day. 
+A minor mode for Emacs that automatically rotates themes according to specified starting times. 
 
 ## Instalation and Usage
 Install by cloning this repository somewhere.
