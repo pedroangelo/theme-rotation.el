@@ -12,11 +12,16 @@
 	"Theme rotation configuration, composed of starting times for specific themes."
 	:type '(set (cons string function))
   :group 'theme-rotation)
-	
-;; AUXILIARY FUNCTIONS AND VARIABLES
 
-; set variable with current theme
+;; VARIABLES
+
+;; currently enabled theme
 (setq theme-rotation-current-theme nil)
+
+;; list of currently active timers
+(setq theme-rotation-active-timers nil)
+
+;; AUXILIARY FUNCTIONS
 
 (defun theme-rotation-convert-time-pair-to-string (date)
 	"convert date pair format to string"
@@ -72,7 +77,9 @@
 	"return t if time in first argument strictly happens before time in second argument"
 	(if (or (< (car time1) (car time2)) 
 					(and (= (car time1) (car time2)) 
-							 (< (cdr time1) (cdr time2)))) t nil))
+							 (< (cdr time1) (cdr time2)))) 
+      t
+    nil))
 
 (defun theme-rotation-current-time-interval-p (time-interval)
 	"return t if current time is within argument time interval"
@@ -147,11 +154,19 @@
 
 (defun theme-rotation-set-timer (time)
 	"set a timer to call theme changer function every day"
-  (run-at-time time (* 60 60 24) 'theme-rotation-update-theme))
+  (let ((newtimer (run-at-time time (* 60 60 24) 'theme-rotation-update-theme)))
+    (add-to-list 'theme-rotation-active-timers newtimer)))
 
 (defun theme-rotation-set-all-timers ()
   "set timers for each theme's starting time"
-  (mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string)))
+  (mapcar 'theme-rotation-set-timer (theme-rotation-list-starting-times-string))
+  (message "theme-rotation: timers to update theme set"))
+
+(defun theme-rotation-cancel-all-timers ()
+  "cancel timers set to update theme"
+  (mapcar 'cancel-timer theme-rotation-active-timers)
+  (setq theme-rotation-active-timers nil)
+  (message "theme-rotation: timers to update theme cancelled"))
 
 ;; (defun theme-rotation-set-timer (pair)
 ;; 	"set a timer to call theme changer function every day"
@@ -177,7 +192,9 @@
         (theme-rotation-update-theme)
         (theme-rotation-set-all-timers))
     ;; run when mode is disabled
-    (message "theme-rotation: mode disabled")))
+    (progn
+      (theme-rotation-cancel-all-timers)
+      (message "theme-rotation: mode disabled"))))
 
 (provide 'theme-rotation) 
 ;;; theme-rotation.el ends here
