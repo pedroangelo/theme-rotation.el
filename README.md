@@ -28,7 +28,7 @@ If your using `use-package`, set the variable using `:custom`, after `:load-path
     :custom
     (theme-rotation-config
      '(("08:00" . tsdh-light)
-	   ("20:00" . tsdh-dark))
+       ("20:00" . tsdh-dark))
      "apply dark-mode after 20:00.")
     :config
     (theme-rotation-mode))
@@ -40,7 +40,7 @@ If you loaded `theme-rotation.el` manually, you can set the variable after `load
 (load "path/to/theme-rotation/theme-rotation.el")
 (setq theme-rotation-config
    '(("08:00" . tsdh-light)
-    ("20:00" . tsdh-dark)))
+     ("20:00" . tsdh-dark)))
 (theme-rotation-mode)
 ```
 
