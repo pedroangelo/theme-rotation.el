@@ -52,7 +52,7 @@ If you loaded `theme-rotation.el` manually, you can set the variable after `load
   ...
   (timeN . themeN))
 ```
-Note that you can set more than 2 themes time periods, so it allows more than just the common *dark mode* configuration.
+Note that you can set more than 2 time periods, so it allows more than just the common *dark mode* configuration.
 
 ## Similar Packages and Contributions
 Several packages and contributions handle themes, usually by allowing to apply dark mode functionality. Here we discuss these, and compare with `theme-rotation.el`package:
