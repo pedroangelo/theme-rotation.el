@@ -55,8 +55,12 @@ If you loaded `theme-rotation.el` manually, you can set the variable after `load
 Note that you can set more than 2 time periods, so it allows more than just the common *dark mode* configuration.
 
 ## Similar Packages and Contributions
-Several packages and contributions handle themes, usually by allowing to apply dark mode functionality. Here we discuss these, and compare with `theme-rotation.el`package:
+Several packages and contributions handle themes, usually by allowing to apply dark mode functionality. Here we discuss these, and compare with `theme-rotation.el`package.
+
+[`cycle-themes.el`](https://github.com/toroidal-code/cycle-themes.el) is an emacs minor mode that allows the user to cycle between a predefined list of themes.
+
+[`theme-changer`](https://github.com/hadronzoo/theme-changer) allows a user to set a location, and according to sunrise and sunset times, changes themes between predefined light and dark themes.
+
+Others:
 - https://parasurv.neocities.org/emacs/change-emacs-theme-depending-on-time
-- https://github.com/toroidal-code/cycle-themes.el
-- https://github.com/hadronzoo/theme-changer
 - https://stackoverflow.com/questions/14760567/emacs-auto-load-color-theme-by-time
