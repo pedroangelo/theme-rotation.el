@@ -1,9 +1,6 @@
 # theme-rotation.el TODO notes
 
 TODO:
-- improve README:
-  - discuss similar packages
-  - add considerations: warn that themes must already be installed; discuss disabling of themes before loading a new theme to avoid undesirable results (use example of manoj-dark)
 - write README as a .org file?
 - change :type of theme-rotation-config to alist?
 - enable to define default theme, which just disables the previous theme
