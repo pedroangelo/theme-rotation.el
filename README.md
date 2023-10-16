@@ -61,6 +61,8 @@ Several packages and contributions handle themes, usually by enabling some sort 
 
 [`theme-changer`](https://github.com/hadronzoo/theme-changer) allows a user to set a location, and according to sunrise and sunset times, changes between predefined light and dark themes. The difference between this package and the `theme-changer` package is that the user may configure custom time intervals, without being bound to sunrise / sunset times.
 
+[`auto-dark-emacs`](https://github.com/LionyxML/auto-dark-emacs) automatically changes between a predefined light and dark theme according to the system dark mode settings. In my OS, I prefer to set the theme to a dark version, since it is aesthetically more pleasing to me. However, I still want a light theme in Emacs during sunlight hours, which this package doesn't allow.
+
 I've found some other contributions that offer similar functionality as this package:
 - In [here](https://parasurv.neocities.org/emacs/change-emacs-theme-depending-on-time), a simple script for changing themes by calling run-at-time timers is described. However, to avoid undesirable behaviour, the previous theme should be disabled before the next one is applied. This is not discussed in the above contribution. 
 - In [here](https://stackoverflow.com/questions/14760567/emacs-auto-load-color-theme-by-time), a simple script that changes themes according to two time periods is described. However, it is not discussed how to allow more than two time periods. Furthermore, it doesn't allow to define periods that do not start at an exact hour. 
